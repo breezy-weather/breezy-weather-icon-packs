@@ -1,16 +1,14 @@
-# IconProvider For GeometricWeather
-A document about icon provider for GeometricWeather
+# 几何天气图标扩展包
 
 ---
 
-### Introduction
-This is a document about icon provider for GeometricWeather. Just like an icon pack for Android Launcher, It could provide weather icons and animators for GeometricWeather.
-Now, I will describe in detail how to build an icon provider for GeometricWeather.
+### 简介
+如同启动器图标包一样，几何天气可以依靠图标扩展包来获取各种风格的天气图标及天气动画，我会在接下来的内容里简短地介绍如果编写一个天气扩展包应用，如果有什么不清楚的地方，请参考几何天气和Pixel全量扩展包这2个项目，或者直接联系我。
 
 ---
 
-### Manifest & Config
-First of all, in order for GeometricWeather to identify the icon provider, you need to add the following action to `<intent-filter>` of the `MainActivity` in `AndroidManifest.xml`.
+### Manifest & 配置文件
+首先，为了让几何天气能够识别到图标包应用，我们要在`AndroidManifest.xml`中为`MainActivity`的 `<intent-filter>`添加一个`action`：
 ```
 <activity android:name=".main.MainActivity">
     ...
@@ -20,7 +18,8 @@ First of all, in order for GeometricWeather to identify the icon provider, you n
     </intent-filter>
 </activity>
 ```
-After adding action, you need to create an configuration file in `res/xml` to declare what resources will be provided. For exmaple, the file name is `icon_provider_config.xml` and the code is as follows:
+
+在这之后，你可以在`res/xml`编写一份文件来标注图标包所提供的资源类目，例如，创建XML文件`icon_provider_config.xml`并添加如下内容：
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <config
@@ -30,7 +29,7 @@ After adding action, you need to create an configuration file in `res/xml` to de
     hasShortcutIcons="true"
     hasSunMoonDrawables="true" />
 ```
-After creating the XML file, you need to declear this file in `AndroidManifest.xml`:
+然后在`AndroidManifest.xml`中声明配置文件：
 ```
 <application>
     ...
@@ -40,8 +39,8 @@ After creating the XML file, you need to declear this file in `AndroidManifest.x
     ...
 </application>
 ```
-And be careful, the name in `android:resource` should as same as the file you just created in `res/xml`.
-If you don't create this file, or if you forget to declare it in `AndroidManifest.xml`, GeometricWeather will use the following code as the default:
+`android:resource`中需要填写你所创建的配置文件的文件名
+如果你没有创建配置文件，或者创建了但未在`AndroidManifest.xml`中声明它，几何天气会以下面的内容作为默认配置：
 ```
 <config
     hasWeatherIcons="true"
@@ -50,9 +49,9 @@ If you don't create this file, or if you forget to declare it in `AndroidManifes
     hasShortcutIcons="true"
     hasSunMoonDrawables="true" />
 ```
-Each item in configuration file corresponds to a specific type of resources. If you set it true, GeometricWeather will try to read resources provided by icon provider. Conversely, if you set it false, GeometricWeather will display its own resources directly. If you don't declare the value of an item, that item will be set to the default value. I will explain the meaning of those items in following content.
+配置中每一项都代表着相应的内容，比如`hasWeatherIcons`表示是否提供天气图标，如果设置为true，几何天气在显示天气图标时会先尝试获取扩展包中的图标资源，如果没有获取成功则使用自带的图标；如果设置为false，则直接使用几何天气自带的图标。如果你没有声明这一项的值，则使用上面的默认值代替。每一项的具体含义我会在后面用到的时候给出。
 
-In addition to the configuration file, you can also create the following files and add them to `AndroidManifest.xml`:
+除了配置文件，你还可以创建过滤器文件，同样的，这些文件也必须在`AndroidManifest.xml`中进行声明：
 ```
 <application>
     ...
@@ -74,17 +73,17 @@ In addition to the configuration file, you can also create the following files a
     ...
 </application>
 ```
-All image resources and animator resources in icon provider need to be named according to specific regulation, so that GeometricWeather can load these resources correctly. If you want to change the file name, you need to create the corresponding filter file to mark their file names.
-* `DRAWABLE_FILTER`: Image resources for weather icons, layered weather icons and minimal icons.
-* `ANIMATOR_FILTER`: Animator resources for layered weather icons.
-* `SHORTCUT_FILTER`: Image resources for shortcut icons.
-* `SUN_MOON_FILTER`: Sun drawable and moon drawable. (Java code)
+为了让几何天气顺利地读取扩展包中的资源，图标资源和动画资源都必须按规则进行命名。如果你想要更改文件名，就必须编写相应的过滤器文件，在文件中标注更改后的文件名，并在`AndroidManifest.xml`中声明你创建的过滤器。
+* `DRAWABLE_FILTER`: 天气图标、分层图标和minimal图标的图片资源。
+* `ANIMATOR_FILTER`: 分层图标的动画资源。
+* `SHORTCUT_FILTER`: Shortcut图标。
+* `SUN_MOON_FILTER`: 用来绘制太阳和月亮的Drawable类
 
 ---
 
-### Weather Icons (256 * 256, PNG format)
-These resources correspond to `hasWeatherIcons` in configuration file.
-You need to put all the weather icon resources into `res/drawable` in PNG format. Image size should be `256 * 256`. And every image should be named according to the following regulation:
+### 天气图标 (256 * 256, PNG格式)
+对应配置文件中的`hasWeatherIcons`。
+所有的天气图标都应该以`256 * 256`的PNG格式存放在`res/drawable`中，图标的命名规则如下（`weather_xxx`，`xxx`是天气类别，如`clear_day`）：
 ```
 weather_clear_day
 weather_clear_night
@@ -111,7 +110,8 @@ weather_thunder_night
 weather_thunderstorm_day
 weather_thunderstorm_night
 ```
-You can also name them according to your own ideas. For example, if I want to set an image `weather_cloudy.png` as both daytime icon and nighttime icon for cloudy weather, you can create a drawable filter `icon_provider_drawable_filter.xml` in `res/xml` and declear the file names through adding following content:
+你也可以更改文件名。比如，假设你想将一张图片 `weather_cloudy.png`同时设置为白天和夜间的阴天图标，这时你就需要创建过滤器文件了。
+比如我们在`res/xml`中创建名为`icon_provider_drawable_filter.xml`的XML格式文件并添加如下内容：
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -121,8 +121,8 @@ You can also name them according to your own ideas. For example, if I want to se
     ...
 </resources>
 ```
-You need to fill in the standard file name in `name`, fill in the real file name in `value`. (without `.png`)
-After creating the file, you also need to declare this file in `AndroidManifest.xml`:
+这样就相当于声明了`weather_cloudy_day`和`weather_cloudy_night`的真实文件名为`weather_cloudy`。注意：不要再name和value里加上`.png`。
+编写好过滤器之后记得要在`AndroidManifest.xml`进行声明：
 ```
 <application>
     ...
@@ -132,31 +132,32 @@ After creating the file, you also need to declare this file in `AndroidManifest.
     ...
 </application>
 ```
-Of course, if icon provider don't provide any weather icons. GeometricWeather will display the default icons.
+如果你不提供过滤器，那么几何天气在读取资源文件时会按照标准文件名来读取，如果此时你恰好没有按照标准格式来命名，或者你压根没有提供天气图标，那么就会出现读取不到的情况，这时会显示几何天气自带的默认图标。
 
 ---
 
-### Minimal Icons (256 * 256, PNG format / 24dp, XML format)
-These resources correspond to `hasMinimalIcons` in configuration file.
-The minimal icons are used in app widget and notification. Every weather need 4 minimal icon images. For example, here are the minimal icons corresponding to daytime cloudy:
+### Minimal图标 (256 * 256, PNG格式 / 24dp, XML格式)
+
+对应配置文件中的`hasMinimalIcons`。
+Minimal图标被用于小部件和通知中。对于每一个天气类型，需要4张Minimal图标，例如对于白天阴天的情况，需要：
 ```
 weather_cloudy_day_mini_light.png
 weather_cloudy_day_mini_grey.png
 weather_cloudy_day_mini_dark.png
 weather_cloudy_day_mini_xml.xml
 ```
-The light icons, grey icons and dark icons need to be stored in `res/drawable` in PNG format, thier size should be `256 * 256`. And It is recommended to use `24dp` vector icons in XML format as the xml icon. Every image should be named according to the regulation:
+分别为亮色图标、灰色图标、深色图标和矢量图标。
+为了和小部件、通知中的字体颜色保持一致，建议亮色图标的颜色为`#fafafa`，灰色为`#9e9e9e`，深色为`#424242`，且均为PNG格式，尺寸`256 * 256`。矢量图标推荐使用XML格式，尺寸`24dp`。
+Minimal图标的命名规则如下：
 ```
-weather_xxx_day_mini_light
-weather_xxx_day_mini_grey
-weather_xxx_day_mini_dark
-weather_xxx_day_mini_xml
+weather_xxx_mini_light
+weather_xxx_mini_grey
+weather_xxx_mini_dark
+weather_xxx_mini_xml
 ```
-`xxx` means weather type. The value of weather type as same as weather icons.
+`xxx` 表示天气类型，如`cloudy_day`，全部种类参考天气图标部分。
 
-In order to match the font color of app widget and notification, the color of light icons should be `#fafafa`, the color of grey icons should be `#9e9e9e`, the color of dark icons should be `#424242`.
-
-If you want to change the file name, you need to add the following content to `icon_provider_drawable_filter.xml`:
+如果想要更改文件名，和天气图标部分的做法相同，需要编写过滤器，例如在`icon_provider_drawable_filter.xml`中加入：
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -168,20 +169,22 @@ If you want to change the file name, you need to add the following content to `i
     ...
 </resources>
 ```
-And don't forget to declear this file in `AndroidManifest.xml`.
+别忘了在`AndroidManifest.xml`中声明过滤器。
 
 ---
 
-### Animators For Weahter Icons (256 * 256, PNG format / XML animator file)
-These resources correspond to `hasWeatherAnimators` in configuration file.
-To achieve animated weather icons, you need to split each weather icon into 1-3 layers(`256 * 256`) and create XML format animator file for each layer. 
-As the daytime thunderstorm example, the layer icons' naming format is as follows:
+### 图标动画 (256 * 256, PNG格式 / XML格式的animator文件)
+对应配置文件中的`hasWeatherAnimators`。
+为了实现天气图标动画，你需要将每个天气图标分割为1-3个图层，并为每个图层创建专属的animator文件（XML格式）。
+![](https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/weather_icon_animator_layers.png)
+
+以白天的雷阵雨天气为例，有如下三个图层：
 ```
 weather_thunderstorm_day_1
 weather_thunderstorm_day_2
 weather_thunderstorm_day_3
 ```
-If you want to change the file name, you need to declare the real names in `icon_provider_drawable_filter.xml`:
+如果你想更改文件名，还是要创建过滤器文件，例如在`icon_provider_drawable_filter.xml`里添加如下内容：
 ```
 <resources>
     ...
@@ -191,18 +194,18 @@ If you want to change the file name, you need to declare the real names in `icon
     ...
 </resources>
 ```
-And don't forget to declear this file in `AndroidManifest.xml`.
+别忘了在`AndroidManifest.xml`中声明它。
 
-In addition to image resources, animator resources also need to be named as follows:
+除了图层外，天气动画文件也要按照规则进行命名：
 ```
 weather_thunderstorm_day_1
 weather_thunderstorm_day_2
 weather_thunderstorm_day_3
 ```
-All of the animator resources should be stored in `res/animator` with XML format.
-Similar to weather icons, if you want to change the file name, you should:
-1. Create a animator filter in `res/xml`, for exmaple: `icon_provider_animator_filter.xml`.
-2. Declear the real file names in `icon_provider_animator_filter.xml`:
+所有的天气动画文件都要以XML格式存储在`res/animator`中。
+与天气图标相似，如果你想更改文件名，编写过滤器文件（此处不是drawable filter了，而是animator filter）：
+1. 在`res/xml`中创建animator过滤器: `icon_provider_animator_filter.xml`.
+2. 在`icon_provider_animator_filter.xml`中声明如下代码:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -217,7 +220,7 @@ Similar to weather icons, if you want to change the file name, you should:
     ...
 </resources>
 ```
-3. Declear this animator filter in `AndroidManifest.xml`:
+3. 在`AndroidManifest.xml`中声明过滤器:
 ```
 <application>
     ...
@@ -230,17 +233,18 @@ Similar to weather icons, if you want to change the file name, you should:
 
 ---
 
-### Shortcut Icons (192 * 192, PNG format / 768 * 768, PNG format)
-These resources correspond to `hasShortcutIcons` in configuration file.
-If you want provide shortcut icons, you should provider 2 image resources for each weather, for example:
+### Shortcut图标 (192 * 192, PNG格式 / 768 * 768, PNG格式)
+这部分对应配置文件中的`hasShortcutIcons`。
+每个天气都拥有2个图标，例如：
 ```
 shortcuts_cloudy_day
 shortcuts_cloudy_day_foreground
 ```
-* `shortcuts_cloudy_day`: shortcut icon for daytime cloudy. Its size is `192 * 192`, and its foreground is a `96 * 96` weather icon, its background is a circle (`176 * 176`).
-* `shortcuts_cloudy_day_foreground`: foreground of shortcut adaptive icon for daytime cloudy. Its size is `768 * 768`, and its foreground is a `256 * 256` weather icon.
+* `shortcuts_cloudy_day`：白天的阴天shortcut图标。尺寸是`192 * 192`，整个图标由一个`96 * 96`的天气图标和一个`176 * 176`的圆形背景构成。
+* `shortcuts_cloudy_day_foreground`：白天的阴天shortcut自适应图标。尺寸是`768 * 768`，由一个`256 * 256`的天气图标构成，背景为全填充的矩形。
 
-If you want to change the file name of shortcut icons, you should create a shortcut filter in `res/xml` and declear this file in `AndroidManifest.xml`:
+图片文件的命名按照`shortcuts_xxx`和`shortcuts_xxx_foreground`的规则，`xxx`是天气种类。
+如果你想要更改文件名，需要创建shortcut过滤器，例如，在`res/xml`创建`icon_provider_shortcut_filter.xml`并在`AndroidManifest.xml`中声明该文件：
 ```
 <resources>
     ...
@@ -261,13 +265,13 @@ If you want to change the file name of shortcut icons, you should create a short
 
 ---
 
-### Sun Drawable & Moon Drawable (java class)
-These resources correspond to `hasSunMoonDrawables` in configuration file.
-You need to create sun drawable and moon drawable with java code because drawing shapes on the canvas has better performance than drawing bitmap directly. 
-However, if you aren't good at coding, you can also ignore this part, GeometricWeather will use `weather_clear_day` and `weather_clear_night` as the sun icon and moon icon.
-And be careful, if you want to provide the drawable with java class, you must declare those 2 drawables in sun moon filter:
-1. Create the filter `icon_provider_sun_moon_filter.xml` in `res/xml`.
-2. Add the following code (replace the contents of value with the the drawable in your icon provider):
+### 太阳Drawable & 月亮Drawable (java类)
+对应配置文件中的`hasSunMoonDrawables`。
+如果要提供单独的太阳drawable和月亮drawable，你需要创建相对应的java类，并通过canvas API来绘制太阳和月亮的形状。这样相比直接绘制bitmap，有着更高的运行效率。
+当然，这并不是必须的，如果你不擅长编码，也可以忽略这部分内容，几何天气会自动读取`weather_clear_day`和`weather_clear_night`作为太阳和月亮图标。
+需要注意的是，如果你确定要编写drawable类，则一定要创建过滤器来声明drawable的位置：
+1. 在`res/xml`中创建`icon_provider_sun_moon_filter.xml`。
+2. 添加如下代码(value中要写你创建的drawable的位置):
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -275,7 +279,7 @@ And be careful, if you want to provide the drawable with java class, you must de
     <item name="moon" value="wangdaye.com.geometricweather.ui.image.MoonDrawable" />
 </resources>
 ```
-3. Declear this file in `AndroidManifest.xml`:
+3. 在`AndroidManifest.xml`中声明sun moon过滤器：
 ```
 <application>
     ...
@@ -285,3 +289,9 @@ And be careful, if you want to provide the drawable with java class, you must de
     ...
 </application>
 ```
+
+---
+
+### 最佳实践
+
+天气图标动画和Minimal图标会给开发者带来较大的工作量。因此建议重点进行天气图标、shortcut图标的制作，其他内容请量力而行。
