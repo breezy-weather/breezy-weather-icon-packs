@@ -1,7 +1,5 @@
 # IconProvider For GeometricWeather
 
----
-
 ### Introduction
 This is a document about icon provider for GeometricWeather. Just like an icon pack for Android Launcher, It could provide weather icons and animators for GeometricWeather.
 Now, I will describe in detail how to build an icon provider for GeometricWeather. If there is anything unclear, please refer to these 2 project: GeometricWeather and FullSizePixelIconProvider, or just cantact me.
