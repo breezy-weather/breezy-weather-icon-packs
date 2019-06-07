@@ -1,7 +1,5 @@
 # 几何天气图标扩展包
 
----
-
 ### 简介
 如同启动器图标包一样，几何天气可以依靠图标扩展包来获取各种风格的天气图标及天气动画，我会在接下来的内容里简短地介绍如果编写一个天气扩展包应用，如果有什么不清楚的地方，请参考几何天气和Pixel全量扩展包这2个项目，或者直接联系我。
 
@@ -82,6 +80,8 @@
 ---
 
 ### 天气图标 (256 * 256, PNG格式)
+<img width="360" src="https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/weather_icons.jpg"/>
+
 对应配置文件中的`hasWeatherIcons`。
 所有的天气图标都应该以`256 * 256`的PNG格式存放在`res/drawable`中，图标的命名规则如下（`weather_xxx`，`xxx`是天气类别，如`clear_day`）：
 ```
@@ -137,6 +137,7 @@ weather_thunderstorm_night
 ---
 
 ### Minimal图标 (256 * 256, PNG格式 / 24dp, XML格式)
+<img width="360" src="https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/minimal_icons.jpg"/>
 
 对应配置文件中的`hasMinimalIcons`。
 Minimal图标被用于小部件和通知中。对于每一个天气类型，需要4张Minimal图标，例如对于白天阴天的情况，需要：
@@ -176,6 +177,7 @@ weather_xxx_mini_xml
 ### 图标动画 (256 * 256, PNG格式 / XML格式的animator文件)
 对应配置文件中的`hasWeatherAnimators`。
 为了实现天气图标动画，你需要将每个天气图标分割为1-3个图层，并为每个图层创建专属的animator文件（XML格式）。
+
 ![](https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/weather_icon_animator_layers.png)
 
 以白天的雷阵雨天气为例，有如下三个图层：
@@ -234,6 +236,8 @@ weather_thunderstorm_day_3
 ---
 
 ### Shortcut图标 (192 * 192, PNG格式 / 768 * 768, PNG格式)
+<img width="360" src="https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/shortcut_icons.jpg"/>
+
 这部分对应配置文件中的`hasShortcutIcons`。
 每个天气都拥有2个图标，例如：
 ```
@@ -266,6 +270,8 @@ shortcuts_cloudy_day_foreground
 ---
 
 ### 太阳Drawable & 月亮Drawable (java类)
+<img width="360" src="https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/sun_moon_drawables.jpg"/>
+
 对应配置文件中的`hasSunMoonDrawables`。
 如果要提供单独的太阳drawable和月亮drawable，你需要创建相对应的java类，并通过canvas API来绘制太阳和月亮的形状。这样相比直接绘制bitmap，有着更高的运行效率。
 当然，这并不是必须的，如果你不擅长编码，也可以忽略这部分内容，几何天气会自动读取`weather_clear_day`和`weather_clear_night`作为太阳和月亮图标。
