@@ -5,7 +5,7 @@ A document about icon provider for GeometricWeather
 
 ### Introduction
 This is a document about icon provider for GeometricWeather. Just like an icon pack for Android Launcher, It could provide weather icons and animators for GeometricWeather.
-Now, I will describe in detail how to build an icon provider for GeometricWeather.
+Now, I will describe in detail how to build an icon provider for GeometricWeather. If there is anything unclear, please refer to these 2 project: GeometricWeather and FullSizePixelIconProvider, or just cantact me.
 
 ---
 
@@ -175,6 +175,8 @@ And don't forget to declear this file in `AndroidManifest.xml`.
 ### Animators For Weahter Icons (256 * 256, PNG format / XML animator file)
 These resources correspond to `hasWeatherAnimators` in configuration file.
 To achieve animated weather icons, you need to split each weather icon into 1-3 layers(`256 * 256`) and create XML format animator file for each layer. 
+![](https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/blob/master/pictures/weather_icon_animator_layers.png)
+
 As the daytime thunderstorm example, the layer icons' naming format is as follows:
 ```
 weather_thunderstorm_day_1
