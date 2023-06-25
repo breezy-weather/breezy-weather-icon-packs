@@ -1,15 +1,13 @@
-# 几何天气图标扩展包
+# Instructions to create an icon pack for Breezy Weather
 
-[English Doc](README_ENG.md)
+[English instructions](INSTRUCTIONS.md)
 
-[Download Geometric Weather icon packs](https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/tree/master/apk)
-
-### 简介
+## 简介
 如同启动器图标包一样，几何天气可以依靠图标扩展包来获取各种风格的天气图标及天气动画，我会在接下来的内容里简短地介绍如果编写一个天气扩展包应用，如果有什么不清楚的地方，请参考几何天气和Pixel全量扩展包这2个项目，或者直接联系我。
 
 ---
 
-### Manifest & 配置文件
+## Manifest & 配置文件
 首先，为了让几何天气能够识别到图标包应用，我们要在`AndroidManifest.xml`中为`MainActivity`的 `<intent-filter>`添加一个`action`：
 ```
 <activity android:name=".main.MainActivity">
@@ -83,7 +81,7 @@
 
 ---
 
-### 天气图标 (256 * 256, PNG格式)
+## 天气图标 (256 * 256, PNG格式)
 <img width="360" src="pictures/weather_icons.jpg?raw=true"/>
 
 对应配置文件中的`hasWeatherIcons`。
@@ -140,7 +138,7 @@ weather_thunderstorm_night
 
 ---
 
-### Minimal图标 (256 * 256, PNG格式 / 24dp, XML格式)
+## Minimal图标 (256 * 256, PNG格式 / 24dp, XML格式)
 <img width="360" src="pictures/minimal_icons.jpg?raw=true"/>
 
 对应配置文件中的`hasMinimalIcons`。
@@ -178,7 +176,7 @@ weather_xxx_mini_xml
 
 ---
 
-### 图标动画 (256 * 256, PNG格式 / XML格式的animator文件)
+## 图标动画 (256 * 256, PNG格式 / XML格式的animator文件)
 对应配置文件中的`hasWeatherAnimators`。
 为了实现天气图标动画，你需要将每个天气图标分割为1-3个图层，并为每个图层创建专属的animator文件（XML格式）。
 
@@ -239,7 +237,7 @@ weather_thunderstorm_day_3
 
 ---
 
-### Shortcut图标 (192 * 192, PNG格式 / 768 * 768, PNG格式)
+## Shortcut图标 (192 * 192, PNG格式 / 768 * 768, PNG格式)
 <img width="360" src="pictures/shortcut_icons.jpg?raw=true"/>
 
 这部分对应配置文件中的`hasShortcutIcons`。
@@ -273,7 +271,7 @@ shortcuts_cloudy_day_foreground
 
 ---
 
-### 太阳Drawable & 月亮Drawable (java类)
+## 太阳Drawable & 月亮Drawable (java类)
 <img width="360" src="pictures/sun_moon_drawables.jpg?raw=true"/>
 
 对应配置文件中的`hasSunMoonDrawables`。
@@ -302,6 +300,6 @@ shortcuts_cloudy_day_foreground
 
 ---
 
-### 最佳实践
+## 最佳实践
 
 天气图标动画和Minimal图标会给开发者带来较大的工作量。因此建议重点进行天气图标、shortcut图标的制作，其他内容请量力而行。

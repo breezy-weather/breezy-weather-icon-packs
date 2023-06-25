@@ -1,17 +1,14 @@
-# Icon packs for Breezy Weather
+# Instructions to create an icon pack for Breezy Weather
 
-[Chinese Doc (unmaintained)](README_ZH.md)
+[Chinese instructions (unmaintained)](INSTRUCTIONS.md)
 
-[Download Geometric Weather icon packs](https://github.com/WangDaYeeeeee/IconProvider-For-GeometricWeather/tree/master/apk)
-
-
-### Introduction
+## Introduction
 This is a document about icon packs in Breezy Weather. Just like an icon pack for Android Launcher, it can provide weather icons and animators for Breezy Weather.
 Now, I will describe in detail how to build an icon provider for Breezy Weather. If there is anything unclear, please refer to these 2 projects: Breezy Weather and FullSizePixelIconProvider, or just cantact me.
 
 ---
 
-### Manifest & Config
+## Manifest & Config
 First of all, in order for Breezy Weather to identify the icon provider, you need to add the following action to `<intent-filter>` of the `MainActivity` in `AndroidManifest.xml`.
 ```
 <activity android:name=".main.MainActivity">
@@ -22,7 +19,7 @@ First of all, in order for Breezy Weather to identify the icon provider, you nee
     </intent-filter>
 </activity>
 ```
-After adding action, you need to create an configuration file in `res/xml` to declare what resources will be provided. For exmaple, the file name is `icon_provider_config.xml` and the code is as follows:
+After adding action, you need to create a configuration file in `res/xml` to declare what resources will be provided. For exmaple, the file name is `icon_provider_config.xml` and the code is as follows:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <config
@@ -32,7 +29,7 @@ After adding action, you need to create an configuration file in `res/xml` to de
     hasShortcutIcons="true"
     hasSunMoonDrawables="true" />
 ```
-After creating the XML file, you need to declear this file in `AndroidManifest.xml`:
+After creating the XML file, you need to declare this file in `AndroidManifest.xml`:
 ```
 <application>
     ...
@@ -84,7 +81,7 @@ All image resources and animator resources in icon provider need to be named acc
 
 ---
 
-### Weather Icons (256 * 256, PNG format)
+## Weather Icons (256 * 256, PNG format)
 These resources correspond to `hasWeatherIcons` in configuration file.
 You need to put all the weather icon resources into `res/drawable` in PNG format. Image size should be `256 * 256`. And every image should be named according to the following regulation:
 ```
@@ -113,7 +110,7 @@ weather_thunder_night
 weather_thunderstorm_day
 weather_thunderstorm_night
 ```
-You can also name them according to your own ideas. For example, if I want to set an image `weather_cloudy.png` as both daytime icon and nighttime icon for cloudy weather, you can create a drawable filter `icon_provider_drawable_filter.xml` in `res/xml` and declear the file names through adding following content:
+You can also name them according to your own ideas. For example, if I want to set an image `weather_cloudy.png` as both daytime icon and nighttime icon for cloudy weather, you can create a drawable filter `icon_provider_drawable_filter.xml` in `res/xml` and declare the file names through adding following content:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -138,7 +135,7 @@ Of course, if icon provider don't provide any weather icons. Breezy Weather will
 
 ---
 
-### Minimal Icons (256 * 256, PNG format / 24dp, XML format)
+## Minimal Icons (256 * 256, PNG format / 24dp, XML format)
 These resources correspond to `hasMinimalIcons` in configuration file.
 The minimal icons are used in app widget and notification. Every weather need 4 minimal icon images. For example, here are the minimal icons corresponding to daytime cloudy:
 ```
@@ -170,11 +167,11 @@ If you want to change the file name, you need to add the following content to `i
     ...
 </resources>
 ```
-And don't forget to declear this file in `AndroidManifest.xml`.
+And don't forget to declare this file in `AndroidManifest.xml`.
 
 ---
 
-### Animators For Weahter Icons (256 * 256, PNG format / XML animator file)
+## Animators For Weather Icons (256 * 256, PNG format / XML animator file)
 These resources correspond to `hasWeatherAnimators` in configuration file.
 To achieve animated weather icons, you need to split each weather icon into 1-3 layers(`256 * 256`) and create XML format animator file for each layer. 
 ![](pictures/weather_icon_animator_layers.png?raw=true)
@@ -195,7 +192,7 @@ If you want to change the file name, you need to declare the real names in `icon
     ...
 </resources>
 ```
-And don't forget to declear this file in `AndroidManifest.xml`.
+And don't forget to declare this file in `AndroidManifest.xml`.
 
 In addition to image resources, animator resources also need to be named as follows:
 ```
@@ -203,10 +200,10 @@ weather_thunderstorm_day_1
 weather_thunderstorm_day_2
 weather_thunderstorm_day_3
 ```
-All of the animator resources should be stored in `res/animator` with XML format.
+All the animator resources should be stored in `res/animator` with XML format.
 Similar to weather icons, if you want to change the file name, you should:
 1. Create a animator filter in `res/xml`, for exmaple: `icon_provider_animator_filter.xml`.
-2. Declear the real file names in `icon_provider_animator_filter.xml`:
+2. Declare the real file names in `icon_provider_animator_filter.xml`:
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -221,7 +218,7 @@ Similar to weather icons, if you want to change the file name, you should:
     ...
 </resources>
 ```
-3. Declear this animator filter in `AndroidManifest.xml`:
+3. Declare this animator filter in `AndroidManifest.xml`:
 ```
 <application>
     ...
@@ -234,9 +231,9 @@ Similar to weather icons, if you want to change the file name, you should:
 
 ---
 
-### Shortcut Icons (192 * 192, PNG format / 768 * 768, PNG format)
+## Shortcut Icons (192 * 192, PNG format / 768 * 768, PNG format)
 These resources correspond to `hasShortcutIcons` in configuration file.
-If you want provide shortcut icons, you should provider 2 image resources for each weather, for example:
+If you want to provide shortcut icons, you should provide 2 image resources for each weather, for example:
 ```
 shortcuts_cloudy_day
 shortcuts_cloudy_day_foreground
@@ -244,7 +241,7 @@ shortcuts_cloudy_day_foreground
 * `shortcuts_cloudy_day`: shortcut icon for daytime cloudy. Its size is `192 * 192`, and its foreground is a `96 * 96` weather icon, its background is a circle (`176 * 176`).
 * `shortcuts_cloudy_day_foreground`: foreground of shortcut adaptive icon for daytime cloudy. Its size is `768 * 768`, and its foreground is a `256 * 256` weather icon.
 
-If you want to change the file name of shortcut icons, you should create a shortcut filter in `res/xml` and declear this file in `AndroidManifest.xml`:
+If you want to change the file name of shortcut icons, you should create a shortcut filter in `res/xml` and declare this file in `AndroidManifest.xml`:
 ```
 <resources>
     ...
@@ -265,13 +262,13 @@ If you want to change the file name of shortcut icons, you should create a short
 
 ---
 
-### Sun Drawable & Moon Drawable (java class)
+## Sun & Moon Drawables (java class)
 These resources correspond to `hasSunMoonDrawables` in configuration file.
 You need to create sun drawable and moon drawable with java code because drawing shapes on the canvas has better performance than drawing bitmap directly. 
 However, if you aren't good at coding, you can also ignore this part, Breezy Weather will use `weather_clear_day` and `weather_clear_night` as the sun icon and moon icon.
 And be careful, if you want to provide the drawable with java class, you must declare those 2 drawables in sun moon filter:
 1. Create the filter `icon_provider_sun_moon_filter.xml` in `res/xml`.
-2. Add the following code (replace the contents of value with the the drawable in your icon provider):
+2. Add the following code (replace the contents of value with the drawable in your icon provider):
 ```
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
@@ -279,7 +276,7 @@ And be careful, if you want to provide the drawable with java class, you must de
     <item name="moon" value="org.breezyweather.ui.image.MoonDrawable" />
 </resources>
 ```
-3. Declear this file in `AndroidManifest.xml`:
+3. Declare this file in `AndroidManifest.xml`:
 ```
 <application>
     ...
